@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Find Easily · Buy Easily — Busca inteligente de veículos</title>
-  <meta name="description" content="Diga o que procura. Nós buscamos nos principais sites de anúncios de carros, motos e barcos e reunimos tudo em um só lugar.">
+  <title>Find Easily · Buy Easily — Pesquisa inteligente de veículos</title>
+  <meta name="description" content="Diga-nos o que procura. Pesquisamos nos principais sites de anúncios de carros, motos e barcos em Portugal e na União Europeia e reunimos tudo num só lugar.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
         <span class="logo-text">Find Easily <em>·</em> Buy Easily</span>
       </a>
       <nav class="nav">
-        <a href="#buscar">Buscar</a>
+        <a href="#pesquisar">Pesquisar</a>
         <a href="#como-funciona">Como funciona</a>
         <a href="#fontes">Fontes</a>
         <a href="#confianca">Confiança</a>
@@ -29,32 +29,44 @@
   </header>
 
   <!-- Hero + Search -->
-  <section class="hero" id="buscar">
+  <section class="hero" id="pesquisar">
     <div class="hero-glow" aria-hidden="true"></div>
     <div class="container hero-inner">
-      <p class="eyebrow">Carros · Motos · Barcos</p>
-      <h1>Diga o que procura.<br><span class="gold">Nós encontramos.</span></h1>
-      <p class="lead">Uma única busca, nos sites de anúncios mais confiáveis do país. Todos os resultados reunidos em um só lugar — com o link direto para o anúncio original.</p>
+      <p class="eyebrow">Carros · Motos · Barcos — Portugal e União Europeia</p>
+      <h1>Diga-nos o que procura.<br><span class="gold">Nós encontramos.</span></h1>
+      <p class="lead">Uma única pesquisa nos sites de anúncios mais fiáveis de Portugal e da Europa. Todos os resultados reunidos num só lugar, com a ligação direta para o anúncio original.</p>
 
       <form class="search-panel" id="searchForm" autocomplete="off">
-        <div class="tabs" role="tablist">
-          <button type="button" class="tab active" data-cat="carro" role="tab" aria-selected="true">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l2-5.5A2 2 0 0 1 6.9 8h10.2a2 2 0 0 1 1.9 1.5L21 15v3a1 1 0 0 1-1 1h-1.5a1 1 0 0 1-1-1v-1h-11v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><circle cx="7" cy="14" r="1"/><circle cx="17" cy="14" r="1"/></svg>
-            Carros
-          </button>
-          <button type="button" class="tab" data-cat="moto" role="tab" aria-selected="false">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/><path d="M5.5 16l4-6h5l4 6M12 10l-1.5-3H8M14.5 10l1.5-3h2.5"/></svg>
-            Motos
-          </button>
-          <button type="button" class="tab" data-cat="barco" role="tab" aria-selected="false">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 16l1.5 3.5h15L21 16H3zM12 3v13M12 4l6 9h-6M12 6l-5 7h5"/></svg>
-            Barcos
-          </button>
+        <div class="panel-top">
+          <div class="tabs" role="tablist" aria-label="Tipo de veículo">
+            <button type="button" class="tab active" data-cat="carro" role="tab" aria-selected="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 15l2-5.5A2 2 0 0 1 6.9 8h10.2a2 2 0 0 1 1.9 1.5L21 15v3a1 1 0 0 1-1 1h-1.5a1 1 0 0 1-1-1v-1h-11v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><circle cx="7" cy="14" r="1"/><circle cx="17" cy="14" r="1"/></svg>
+              Carros
+            </button>
+            <button type="button" class="tab" data-cat="moto" role="tab" aria-selected="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/><path d="M5.5 16l4-6h5l4 6M12 10l-1.5-3H8M14.5 10l1.5-3h2.5"/></svg>
+              Motos
+            </button>
+            <button type="button" class="tab" data-cat="barco" role="tab" aria-selected="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 16l1.5 3.5h15L21 16H3zM12 3v13M12 4l6 9h-6M12 6l-5 7h5"/></svg>
+              Barcos
+            </button>
+          </div>
+
+          <div class="scope" role="radiogroup" aria-label="Onde pesquisar">
+            <span class="scope-label">Pesquisar em</span>
+            <div class="segmented">
+              <input type="radio" name="ambito" id="ambitoPT" value="PT" checked>
+              <label for="ambitoPT">Portugal</label>
+              <input type="radio" name="ambito" id="ambitoUE" value="UE">
+              <label for="ambitoUE">Toda a UE</label>
+            </div>
+          </div>
         </div>
 
         <div class="field field-wide">
-          <label for="q">O que você procura?</label>
-          <input id="q" name="q" type="text" placeholder="Ex.: SUV automático, teto solar, único dono, revisões em dia">
+          <label for="q">O que procura?</label>
+          <input id="q" name="q" type="text" placeholder="Ex.: SUV automático, teto de abrir, um só dono, livro de revisões">
         </div>
 
         <div class="grid-fields">
@@ -74,12 +86,13 @@
             <label for="precoMax">Preço até</label>
             <select id="precoMax" name="precoMax">
               <option value="">Sem limite</option>
-              <option value="50000">R$ 50 mil</option>
-              <option value="100000">R$ 100 mil</option>
-              <option value="200000">R$ 200 mil</option>
-              <option value="400000">R$ 400 mil</option>
-              <option value="800000">R$ 800 mil</option>
-              <option value="1500000">R$ 1,5 milhão</option>
+              <option value="10000">10 000 €</option>
+              <option value="20000">20 000 €</option>
+              <option value="35000">35 000 €</option>
+              <option value="50000">50 000 €</option>
+              <option value="80000">80 000 €</option>
+              <option value="150000">150 000 €</option>
+              <option value="500000">500 000 €</option>
             </select>
           </div>
         </div>
@@ -90,29 +103,24 @@
 
         <div class="grid-fields advanced" id="advanced" hidden>
           <div class="field">
-            <label for="estado">Estado</label>
-            <select id="estado" name="estado">
-              <option value="">Todo o Brasil</option>
-              <option>SP</option><option>RJ</option><option>MG</option><option>PR</option>
-              <option>SC</option><option>RS</option><option>DF</option><option>BA</option>
-              <option>GO</option><option>PE</option>
-            </select>
+            <label for="regiao" id="regiaoLabel">Distrito</label>
+            <select id="regiao" name="regiao"></select>
           </div>
           <div class="field" data-only="carro moto">
-            <label for="kmMax">Quilometragem até</label>
+            <label for="kmMax">Quilómetros até</label>
             <select id="kmMax" name="kmMax">
               <option value="">Qualquer</option>
-              <option value="10000">10.000 km</option>
-              <option value="30000">30.000 km</option>
-              <option value="60000">60.000 km</option>
-              <option value="100000">100.000 km</option>
+              <option value="10000">10 000 km</option>
+              <option value="30000">30 000 km</option>
+              <option value="60000">60 000 km</option>
+              <option value="100000">100 000 km</option>
             </select>
           </div>
           <div class="field" data-only="carro moto">
-            <label for="cambio">Câmbio</label>
-            <select id="cambio" name="cambio">
+            <label for="caixa">Caixa</label>
+            <select id="caixa" name="caixa">
               <option value="">Qualquer</option>
-              <option>Automático</option>
+              <option>Automática</option>
               <option>Manual</option>
             </select>
           </div>
@@ -120,34 +128,34 @@
             <label for="combustivel">Combustível</label>
             <select id="combustivel" name="combustivel">
               <option value="">Qualquer</option>
-              <option>Flex</option><option>Gasolina</option><option>Diesel</option>
-              <option>Híbrido</option><option>Elétrico</option>
+              <option>Gasolina</option><option>Gasóleo</option><option>Híbrido</option>
+              <option>Híbrido plug-in</option><option>Elétrico</option>
             </select>
           </div>
           <div class="field">
             <label for="cor">Cor</label>
             <select id="cor" name="cor">
               <option value="">Qualquer</option>
-              <option>Preto</option><option>Branco</option><option>Prata</option>
-              <option>Cinza</option><option>Azul</option><option>Vermelho</option>
+              <option>Preto</option><option>Branco</option><option>Cinzento</option>
+              <option>Prateado</option><option>Azul</option><option>Vermelho</option>
             </select>
           </div>
           <div class="field" data-only="barco">
-            <label for="pes">Tamanho mínimo</label>
-            <select id="pes" name="pes">
+            <label for="comprimento">Comprimento mínimo</label>
+            <select id="comprimento" name="comprimento">
               <option value="">Qualquer</option>
-              <option value="20">20 pés</option>
-              <option value="30">30 pés</option>
-              <option value="40">40 pés</option>
-              <option value="50">50 pés</option>
+              <option value="6">6 m</option>
+              <option value="9">9 m</option>
+              <option value="12">12 m</option>
+              <option value="15">15 m</option>
             </select>
           </div>
         </div>
 
         <div class="search-actions">
-          <p class="sources-hint">Buscando em <strong id="sourceCount">0</strong> sites de confiança</p>
+          <p class="sources-hint">A pesquisar em <strong id="sourceCount">0</strong> sites de confiança · <span id="scopeHint">Portugal</span></p>
           <button type="submit" class="btn-primary">
-            Buscar anúncios
+            Pesquisar anúncios
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
         </div>
@@ -168,10 +176,10 @@
           <label for="sort">Ordenar por</label>
           <select id="sort">
             <option value="relevancia">Relevância</option>
-            <option value="preco-asc">Menor preço</option>
-            <option value="preco-desc">Maior preço</option>
-            <option value="ano-desc">Mais novos</option>
-            <option value="km-asc">Menor km</option>
+            <option value="preco-asc">Preço mais baixo</option>
+            <option value="preco-desc">Preço mais alto</option>
+            <option value="ano-desc">Mais recentes</option>
+            <option value="km-asc">Menos quilómetros</option>
           </select>
         </div>
       </div>
@@ -186,8 +194,8 @@
       <div class="cards" id="cards"></div>
 
       <div class="empty" id="empty" hidden>
-        <h3>Nenhum anúncio com essas características — ainda.</h3>
-        <p>Tente ampliar a faixa de preço, o ano ou a região. Em breve você poderá criar um alerta e ser avisado quando surgir.</p>
+        <h3>Nenhum anúncio com essas características, por agora.</h3>
+        <p>Experimente alargar o preço, o ano ou pesquisar em toda a UE. Em breve poderá criar um alerta e ser avisado quando surgir.</p>
       </div>
     </div>
   </section>
@@ -200,18 +208,18 @@
       <div class="steps">
         <article class="step">
           <span class="step-num">01</span>
-          <h3>Você descreve</h3>
-          <p>Marca, ano, preço, quilometragem ou simplesmente as características que importam para você.</p>
+          <h3>Descreve o que quer</h3>
+          <p>Marca, ano, preço, quilómetros ou simplesmente as características que lhe importam. Escolhe Portugal ou toda a União Europeia.</p>
         </article>
         <article class="step">
           <span class="step-num">02</span>
-          <h3>Nós buscamos</h3>
-          <p>Consultamos simultaneamente os principais portais de anúncios e reunimos tudo que combina com o seu pedido.</p>
+          <h3>Nós pesquisamos</h3>
+          <p>Consultamos em simultâneo os principais sites de anúncios e reunimos tudo o que corresponde ao seu pedido.</p>
         </article>
         <article class="step">
           <span class="step-num">03</span>
-          <h3>Você escolhe</h3>
-          <p>Compare lado a lado e siga direto para o anúncio original, no site onde ele foi publicado.</p>
+          <h3>Escolhe com calma</h3>
+          <p>Compare lado a lado e siga diretamente para o anúncio original, no site onde foi publicado.</p>
         </article>
       </div>
     </div>
@@ -222,8 +230,11 @@
     <div class="container">
       <p class="eyebrow center">Fontes consultadas</p>
       <h2 class="center">Apenas onde já existe confiança.</h2>
-      <p class="lead center narrow">Selecionamos portais reconhecidos no mercado brasileiro. Não hospedamos anúncios nem intermediamos pagamentos — levamos você ao anúncio original.</p>
-      <div class="sources" id="sourcesList"></div>
+      <p class="lead center narrow">Selecionámos sites reconhecidos em Portugal e na Europa. Não alojamos anúncios nem intermediamos pagamentos: levamos o comprador ao anúncio original.</p>
+      <h3 class="sources-group">Portugal</h3>
+      <div class="sources" id="sourcesPT"></div>
+      <h3 class="sources-group">União Europeia</h3>
+      <div class="sources" id="sourcesUE"></div>
     </div>
   </section>
 
@@ -232,18 +243,18 @@
     <div class="container trust">
       <div class="trust-item">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
-        <h3>Link direto ao original</h3>
+        <h3>Ligação direta ao original</h3>
         <p>Cada resultado leva ao anúncio no site de origem. Sem intermediários, sem surpresas.</p>
       </div>
       <div class="trust-item">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
-        <h3>Busca imparcial</h3>
-        <p>Não vendemos posição. Os resultados seguem as características que você pediu.</p>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3z"/></svg>
+        <h3>Toda a Europa</h3>
+        <p>Compare o mercado português com o europeu. Nos anúncios de fora indicamos que há custos de legalização e ISV a considerar.</p>
       </div>
       <div class="trust-item">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
         <h3>Privacidade</h3>
-        <p>Você não precisa se cadastrar para buscar. Seus dados continuam seus.</p>
+        <p>Não precisa de criar conta para pesquisar. Os seus dados continuam seus.</p>
       </div>
     </div>
   </section>
@@ -252,7 +263,7 @@
     <div class="container footer-inner">
       <div>
         <span class="logo-text">Find Easily <em>·</em> Buy Easily</span>
-        <p class="muted">Versão de demonstração — os anúncios exibidos são exemplos fictícios.</p>
+        <p class="muted">Versão de demonstração. Os anúncios apresentados são exemplos fictícios.</p>
       </div>
       <p class="muted">© 2026 Find Easily Buy Easily</p>
     </div>

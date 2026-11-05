@@ -2,7 +2,7 @@
   const $ = (sel) => document.querySelector(sel);
   const $$ = (sel) => [...document.querySelectorAll(sel)];
 
-  const state = { cat: "carro", results: [], sourceFilter: "all", sort: "relevancia", terms: [] };
+  const state = { cat: "carro", ambito: "PT", results: [], sourceFilter: "all", sort: "relevancia", terms: [] };
 
   const ICONS = {
     carro: '<svg viewBox="0 0 120 60"><path d="M8 42c0-4 2-7 6-8l14-3 16-12c3-2 6-3 10-3h22c5 0 9 2 12 5l10 10 10 2c4 1 6 4 6 8v4c0 2-1 3-3 3h-8"/><path d="M30 49H54M80 49H54"/><circle cx="22" cy="48" r="7"/><circle cx="92" cy="48" r="7"/><path d="M46 31l8-9c2-2 4-3 7-3h7v12zM74 19h6c3 0 5 1 7 3l8 9H74z"/></svg>',
@@ -11,27 +11,36 @@
   };
   const EXT = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>';
 
-  const STOP = new Set(["de", "da", "do", "e", "com", "em", "a", "o", "para", "um", "uma", "que", "os", "as", "no", "na"]);
+  const STOP = new Set(["de", "da", "do", "e", "com", "em", "a", "o", "para", "um", "uma", "que", "os", "as", "no", "na", "so"]);
   const SYN = {
-    suv: ["macan", "x5", "glc", "q5", "xc60", "corolla cross", "compass", "t-cross", "velar", "hilux"],
-    sedan: ["320i", "c 300", "civic", "seal"],
-    esportivo: ["911", "panigale", "macan", "m sport", "amg", "mt-09", "z900"],
-    eletrico: ["eletrico"],
+    suv: ["macan", "x5", "glc", "q5", "xc60", "3008", "formentor", "velar", "c-hr"],
+    citadino: ["clio", "golf", "classe a"],
+    desportivo: ["911", "panigale", "macan", "pack m", "amg", "mt-09", "formentor"],
+    automatico: ["automatica"],
+    diesel: ["gasoleo"],
     hibrido: ["hibrido"],
-    automatico: ["automatico"],
-    lancha: ["focker", "sea ray", "raptor"],
-    iate: ["azimut", "ferretti", "intermarine", "schaefer"],
+    eletrico: ["eletrico"],
+    lancha: ["cap camarat", "activ", "sea ray", "v40"],
+    iate: ["azimut", "sunseeker", "princess"],
+    veleiro: ["oceanis", "veleiro"],
+    scooter: ["vespa"],
+    trail: ["gs", "africa twin"],
   };
 
   const norm = (s) => String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-  const brl = (n) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-  const num = (n) => n.toLocaleString("pt-BR");
+  const eur = (n) => n.toLocaleString("pt-PT", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+  const num = (n) => n.toLocaleString("pt-PT");
   const sourceById = (id) => SOURCES.find((s) => s.id === id);
+  const catLabel = { carro: "Carros", moto: "Motos", barco: "Barcos" };
+
+  function activeSources() {
+    return SOURCES.filter((s) => s.cats.includes(state.cat) && (state.ambito === "UE" || s.countries.includes("PT")));
+  }
 
   function sourceLink(item) {
     const src = sourceById(item.source);
-    const q = encodeURIComponent(`${item.marca} ${item.modelo}`);
-    if (src.id === "olx") return `${src.url}/brasil?q=${q}`;
+    const q = encodeURIComponent(`${item.marca} ${item.modelo}`.toLowerCase());
+    if (src.id === "olx") return `${src.url}/ads/q-${q.replace(/%20/g, "-")}/`;
     return src.url;
   }
 
@@ -45,17 +54,30 @@
     for (let y = 2026; y >= 2010; y--) years.push(`<option>${y}</option>`);
     $("#anoMin").insertAdjacentHTML("beforeend", years.join(""));
   }
+  function fillRegion() {
+    const sel = $("#regiao");
+    if (state.ambito === "PT") {
+      $("#regiaoLabel").textContent = "Distrito";
+      sel.innerHTML = '<option value="">Todo o país</option>' + DISTRITOS.map((d) => `<option>${d}</option>`).join("");
+    } else {
+      $("#regiaoLabel").textContent = "País";
+      const codes = Object.keys(COUNTRIES).filter((c) => activeSources().some((s) => s.countries.includes(c)));
+      sel.innerHTML = '<option value="">Toda a UE</option>' + codes.map((c) => `<option value="${c}">${COUNTRIES[c]}</option>`).join("");
+    }
+  }
   function updateCatFields() {
     $$("[data-only]").forEach((el) => {
       el.hidden = !el.dataset.only.split(" ").includes(state.cat);
     });
     const placeholders = {
-      carro: "Ex.: SUV automático, teto solar, único dono, revisões em dia",
-      moto: "Ex.: Naked, único dono, até 20 mil km, revisões em dia",
-      barco: "Ex.: Lancha com cabine, flybridge, gerador, até 40 pés",
+      carro: "Ex.: SUV automático, teto de abrir, um só dono, livro de revisões",
+      moto: "Ex.: Trail, um só dono, menos de 20 000 km, malas laterais",
+      barco: "Ex.: Lancha com cabine, flybridge, gerador, mais de 9 m",
     };
     $("#q").placeholder = placeholders[state.cat];
-    $("#sourceCount").textContent = SOURCES.filter((s) => s.cats.includes(state.cat)).length;
+    $("#sourceCount").textContent = activeSources().length;
+    $("#scopeHint").textContent = state.ambito === "PT" ? "Portugal" : "Portugal e União Europeia";
+    fillRegion();
   }
 
   $$(".tab").forEach((tab) =>
@@ -69,6 +91,10 @@
     })
   );
 
+  $$('input[name="ambito"]').forEach((r) =>
+    r.addEventListener("change", () => { state.ambito = r.value; updateCatFields(); })
+  );
+
   $("#toggleAdvanced").addEventListener("click", (e) => {
     const adv = $("#advanced");
     adv.hidden = !adv.hidden;
@@ -77,7 +103,7 @@
 
   /* ---------- Search ---------- */
   function haystack(l) {
-    return norm([l.marca, l.modelo, l.versao, l.cor, l.combustivel, l.cambio, l.cidade, l.estado, ...l.feats].join(" "));
+    return norm([l.marca, l.modelo, l.versao, l.cor, l.combustivel, l.caixa, l.cidade, l.distrito, COUNTRIES[l.pais], ...l.feats].join(" "));
   }
 
   function search(f) {
@@ -86,16 +112,20 @@
 
     return LISTINGS.filter((l) => {
       if (l.cat !== state.cat) return false;
+      if (state.ambito === "PT" && l.pais !== "PT") return false;
+      if (f.regiao) {
+        if (state.ambito === "PT" && l.distrito !== f.regiao) return false;
+        if (state.ambito === "UE" && l.pais !== f.regiao) return false;
+      }
       if (f.marca && l.marca !== f.marca) return false;
       if (f.modelo && !norm(`${l.modelo} ${l.versao}`).includes(norm(f.modelo))) return false;
       if (f.anoMin && l.ano < +f.anoMin) return false;
       if (f.precoMax && l.preco > +f.precoMax) return false;
-      if (f.estado && l.estado !== f.estado) return false;
       if (f.kmMax && l.km != null && l.km > +f.kmMax) return false;
-      if (f.cambio && l.cambio && l.cambio !== f.cambio) return false;
+      if (f.caixa && l.caixa && l.caixa !== f.caixa) return false;
       if (f.combustivel && l.combustivel !== f.combustivel) return false;
       if (f.cor && l.cor !== f.cor) return false;
-      if (f.pes && l.pes != null && l.pes < +f.pes) return false;
+      if (f.comprimento && l.comprimento != null && l.comprimento < +f.comprimento) return false;
       return true;
     })
       .map((l) => {
@@ -111,15 +141,14 @@
   }
 
   function sorted(list) {
-    const arr = [...list];
     const by = {
-      "relevancia": (a, b) => b.score - a.score || b.ano - a.ano,
+      "relevancia": (a, b) => b.score - a.score || (a.pais === "PT" ? -1 : 0) - (b.pais === "PT" ? -1 : 0) || b.ano - a.ano,
       "preco-asc": (a, b) => a.preco - b.preco,
       "preco-desc": (a, b) => b.preco - a.preco,
       "ano-desc": (a, b) => b.ano - a.ano,
       "km-asc": (a, b) => (a.km ?? a.horas) - (b.km ?? b.horas),
     };
-    return arr.sort(by[state.sort]);
+    return [...list].sort(by[state.sort]);
   }
 
   /* ---------- Render ---------- */
@@ -133,18 +162,23 @@
     const specs = [
       l.km != null ? `${num(l.km)} km` : null,
       l.horas != null ? `${num(l.horas)} h de motor` : null,
-      l.pes != null ? `${l.pes} pés` : null,
-      l.cambio || null,
+      l.comprimento != null ? `${num(l.comprimento)} m` : null,
+      l.caixa ? `Caixa ${l.caixa.toLowerCase()}` : null,
       l.combustivel,
       l.cor,
       ...l.feats,
     ].filter(Boolean);
+    const local = l.pais === "PT" ? `${l.cidade} · ${l.distrito === l.cidade ? "Portugal" : l.distrito}` : `${l.cidade} · ${COUNTRIES[l.pais]}`;
+    const importNote = l.pais !== "PT"
+      ? `<p class="import-note">Fora de Portugal: ${l.cat === "barco" ? "custos de registo e transporte" : "ISV e legalização"} a considerar.</p>`
+      : "";
 
     return `
       <article class="card" style="--tone:${l.tone}; animation-delay:${Math.min(i, 12) * 40}ms">
         <div class="card-media">
           <span class="badge">${src.name}</span>
           <span class="badge year-badge">${l.ano}</span>
+          <span class="badge country-badge${l.pais === "PT" ? " is-pt" : ""}">${l.pais}</span>
           ${ICONS[l.cat]}
         </div>
         <div class="card-body">
@@ -152,12 +186,13 @@
             <h3 class="card-title">${l.marca} ${l.modelo}</h3>
             <p class="card-sub">${l.versao || "&nbsp;"}</p>
           </div>
-          <p class="card-price">${brl(l.preco)}</p>
+          <p class="card-price">${eur(l.preco)}</p>
           <div class="specs">
             ${specs.map((s) => `<span class="spec${isMatch(s) ? " match" : ""}">${s}</span>`).join("")}
           </div>
+          ${importNote}
           <div class="card-foot">
-            <span class="location">${l.cidade} · ${l.estado}</span>
+            <span class="location">${local}</span>
             <a class="card-link" href="${sourceLink(l)}" target="_blank" rel="noopener noreferrer">
               Ver anúncio original ${EXT}
             </a>
@@ -169,9 +204,9 @@
   function renderSourceFilter() {
     const counts = {};
     state.results.forEach((r) => (counts[r.source] = (counts[r.source] || 0) + 1));
-    const chips = [`<button class="chip ${state.sourceFilter === "all" ? "active" : ""}" data-src="all">Todas as fontes<span class="n">${state.results.length}</span></button>`];
+    const chips = [`<button type="button" class="chip ${state.sourceFilter === "all" ? "active" : ""}" data-src="all">Todas as fontes<span class="n">${state.results.length}</span></button>`];
     SOURCES.filter((s) => counts[s.id]).forEach((s) => {
-      chips.push(`<button class="chip ${state.sourceFilter === s.id ? "active" : ""}" data-src="${s.id}">${s.name}<span class="n">${counts[s.id]}</span></button>`);
+      chips.push(`<button type="button" class="chip ${state.sourceFilter === s.id ? "active" : ""}" data-src="${s.id}">${s.name}<span class="n">${counts[s.id]}</span></button>`);
     });
     $("#sourceFilter").innerHTML = chips.join("");
     $$("#sourceFilter .chip").forEach((c) =>
@@ -186,17 +221,19 @@
     $("#empty").hidden = visible.length > 0;
     $("#sourceFilter").hidden = state.results.length === 0;
 
-    const label = { carro: "carros", moto: "motos", barco: "barcos" }[state.cat];
+    const n = state.results.length;
     const nSources = new Set(state.results.map((r) => r.source)).size;
-    $("#resultsTitle").textContent = `${state.results.length} ${state.results.length === 1 ? "anúncio encontrado" : "anúncios encontrados"}`;
-    $("#resultsMeta").textContent = state.results.length
-      ? `${label[0].toUpperCase() + label.slice(1)} reunidos de ${nSources} ${nSources === 1 ? "site" : "sites"} de confiança.`
+    const nCountries = new Set(state.results.map((r) => r.pais)).size;
+    $("#resultsTitle").textContent = `${n} ${n === 1 ? "anúncio encontrado" : "anúncios encontrados"}`;
+    $("#resultsMeta").textContent = n
+      ? `${catLabel[state.cat]} reunidos de ${nSources} ${nSources === 1 ? "site" : "sites"} de confiança` +
+        (state.ambito === "UE" ? ` em ${nCountries} ${nCountries === 1 ? "país" : "países"}.` : " em Portugal.")
       : "";
   }
 
-  /* Simula a varredura nas fontes (na versão real, chamadas paralelas ao backend) */
+  /* Simula a pesquisa nas fontes (na versão real, chamadas em paralelo ao backend) */
   function runScan(done) {
-    const sources = SOURCES.filter((s) => s.cats.includes(state.cat));
+    const sources = activeSources();
     const scan = $("#scan");
     const bar = $("#scan .scan-bar span");
     $("#scanList").innerHTML = sources.map((s) => `<li data-id="${s.id}">${s.name}</li>`).join("");
@@ -204,16 +241,19 @@
     $("#cards").innerHTML = "";
     $("#empty").hidden = true;
     $("#sourceFilter").hidden = true;
-    $("#resultsTitle").textContent = "Buscando anúncios…";
-    $("#resultsMeta").textContent = "Consultando os sites de confiança em tempo real.";
+    $("#resultsTitle").textContent = "A pesquisar anúncios…";
+    $("#resultsMeta").textContent = state.ambito === "PT"
+      ? "A consultar os sites de confiança em Portugal."
+      : "A consultar os sites de confiança em Portugal e na União Europeia.";
     bar.style.width = "0";
 
+    const step = Math.max(120, 1800 / sources.length);
     sources.forEach((s, i) => {
       setTimeout(() => {
         $(`#scanList li[data-id="${s.id}"]`).classList.add("done");
         bar.style.width = `${((i + 1) / sources.length) * 100}%`;
         if (i === sources.length - 1) setTimeout(() => { scan.hidden = true; done(); }, 350);
-      }, 220 + i * 230);
+      }, 220 + i * step);
     });
   }
 
@@ -232,13 +272,17 @@
   $("#sort").addEventListener("change", (e) => { state.sort = e.target.value; renderResults(); });
 
   /* ---------- Sources section ---------- */
-  const catLabel = { carro: "Carros", moto: "Motos", barco: "Barcos" };
-  $("#sourcesList").innerHTML = SOURCES.map(
-    (s) => `<a class="source" href="${s.url}" target="_blank" rel="noopener noreferrer">
+  const sourceTile = (s) => {
+    const where = s.countries.length > 2 ? `${s.countries.length} países` : s.countries.map((c) => COUNTRIES[c]).join(" · ");
+    return `<a class="source" href="${s.url}" target="_blank" rel="noopener noreferrer">
       <span class="source-name">${s.name}</span>
       <span class="source-cats">${s.cats.map((c) => catLabel[c]).join(" · ")}</span>
-    </a>`
-  ).join("");
+      <span class="source-where">${where}</span>
+    </a>`;
+  };
+  const isPT = (s) => s.countries.length === 1 && s.countries[0] === "PT";
+  $("#sourcesPT").innerHTML = SOURCES.filter(isPT).map(sourceTile).join("");
+  $("#sourcesUE").innerHTML = SOURCES.filter((s) => !isPT(s)).map(sourceTile).join("");
 
   fillBrands();
   fillYears();

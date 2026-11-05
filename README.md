@@ -1,6 +1,6 @@
 # Find Easily · Buy Easily
 
-Busca de anúncios de **carros, motos e barcos** por características. O comprador diz o que procura, o site consulta os portais de anúncios de confiança e mostra todos os resultados em um só lugar, com link direto para o anúncio original.
+Pesquisa de anúncios de **carros, motos e barcos** por características, em **Portugal e em toda a União Europeia**. O comprador diz o que procura, o site consulta os sites de anúncios de confiança (Standvirtual, OLX, CustoJusto, AutoScout24, mobile.de, Boat24, entre outros) e mostra todos os resultados num só lugar, com ligação direta para o anúncio original.
 
 ## Versão de teste
 
